@@ -107,10 +107,10 @@ Git.
 Docker وDocker Compose عند استخدام النشر بالحاويات.
 2. Installation | التثبيت
 # Clone the repository | استنساخ المستودع
-git clone https://github.com/RogueByteOfficial/roguebyte-cyber-lab.git
+git clone https://github.com/RogueByteOfficial/roguebyte-cyber-security-gray-edition.git
 
 # Enter the project directory | الدخول إلى مجلد المشروع
-cd roguebyte-cyber-lab
+cd roguebyte-cyber-security-gray-edition
 
 # Install dependencies | تثبيت الاعتماديات
 npm install
