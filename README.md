@@ -1,128 +1,184 @@
-# RogueByte Cyber Lab — Black Gray Edition v1
+🛡️ RogueByte Cyber Lab — Black Gray Edition v1
 
-> **Production-Ready Cybersecurity Training Platform & Isolated Lab Environment**  
-> **Project Owner & Creator:** [SidoDev-Dz](https://github.com/RogueByteOfficial)  
-> **Support on Ko-fi:** [https://ko-fi.com/roguebyte](https://ko-fi.com/roguebyte)  
-> **Official GitHub Organization:** [https://github.com/RogueByteOfficial](https://github.com/RogueByteOfficial)
+منصة احترافية للتدريب على الأمن السيبراني واختبار المهارات داخل بيئة معزولة
 
----
+Production-Ready Cybersecurity Training Platform & Isolated Lab Environment
 
-## 🛡️ Overview
+Project Owner & Creator | مالك المشروع والمطور: SidoDev-Dz
+Support | الدعم والتبرعات: https://ko-fi.com/roguebyte
+Official GitHub Organization | منظمة GitHub الرسمية: https://github.com/RogueByteOfficial
+🌐 Overview | نظرة عامة
 
-**RogueByte Cyber Lab** is a full-stack, enterprise-grade cybersecurity education and hands-on skill evaluation platform. Engineered from the ground up for zero simulation and defense-in-depth, every mission is validated against actual server-side criteria, isolated ephemeral file tables, and authentic threat telemetry.
+English
 
-Designed with an immersive **Black Gray** cybersecurity aesthetic (obsidian slates, emerald cyber accents, and restrained amber highlights), the platform supports both **English (LTR)** and **Arabic (العربية - RTL)** interfaces seamlessly.
+RogueByte Cyber Lab is a full-stack cybersecurity education and hands-on skill evaluation platform designed for authorized security training, defensive operations, and practical security research.
 
----
+The platform combines real server-side mission validation, isolated lab environments, interactive terminal sessions, threat telemetry, and a role-based management system.
 
-## ✨ Key Features
+Featuring a modern Black Gray cybersecurity aesthetic, the interface supports English (LTR) and Arabic (RTL), with seamless language switching and localized user experiences.
 
-- **16 Fully Specified Functional Missions:** Spanning 4 industry domains:
-  - 🐧 **Linux Hardening:** File permission audits, SUID binary privilege escalation discovery, automated permission remediation, and authentication log forensics.
-  - 🌐 **Network Forensics:** CIDR subnetting, unencrypted PCAP credential sniffing, C2 beaconing detection, and Nmap backdoor enumeration.
-  - ⚔️ **Web Application Security:** SQL injection authentication bypass, Stored XSS defense, IDOR access controls, and CSRF token defenses.
-  - 🛡️ **SOC & Defensive Threat Hunting:** Impossible Travel detection, SIEM PowerShell deobfuscation, Sigma detection rule mapping, and structured Incident Response triage reporting.
-- **Isolated Lab Execution Service:** Real sandboxed container sessions with live filesystem state changes, TTL auto-cleanup, and in-browser interactive terminal.
-- **Server-Side Automated State Grader:** Verifies the actual octal file permissions and modified assets inside active lab environments.
-- **Student Dashboard & Cryptographic Certificates:** Real-time XP tracking, rank progression (Apprentice to Principal Operative), badge gallery, and verifiable completion certificates signed by SidoDev-Dz.
-- **Instructor Operations Portal:** Create cohort assignments, track student progress analytics, and review incident reports with custom scoring.
-- **Root Admin Center:** User lifecycle management (suspend/promote), mission authoring studio, live lab monitor (force-kill container sessions), immutable security audit logs, maintenance mode toggle, and 1-click CSV exports.
-- **Zero Mock Fallbacks:** Persistent storage, transactional XP awards, and duplicate-submission defenses.
+العربية
 
----
+RogueByte Cyber Lab هي منصة متكاملة لتعليم الأمن السيبراني وتقييم المهارات العملية، مصممة للتدريب الأمني المصرح به، والعمليات الدفاعية، والبحث الأمني التطبيقي.
 
-## 🚀 Quick Start (Local Development)
+تجمع المنصة بين التحقق الفعلي من إنجاز المهام على الخادم، وبيئات التدريب المعزولة، والجلسات التفاعلية لسطر الأوامر، ومراقبة الأحداث الأمنية، ونظام متكامل لإدارة المستخدمين والصلاحيات.
 
-### 1. Prerequisites
-- **Node.js** v20.x or v22.x LTS
-- **npm** v10+
+تعتمد المنصة هوية بصرية احترافية بألوان الأسود والرمادي ولمسات خضراء مستوحاة من عالم الأمن السيبراني، مع دعم كامل لواجهتي العربية والإنجليزية، بما في ذلك اتجاه النص من اليمين إلى اليسار (RTL) ومن اليسار إلى اليمين (LTR).
 
-### 2. Install & Start
-```bash
-# Clone the repository
+✨ Key Features | المميزات الرئيسية
+🎯 1. Sixteen Practical Missions | ست عشرة مهمة عملية
+
+Linux Hardening | تأمين أنظمة Linux
+
+تدقيق صلاحيات الملفات والمجلدات.
+اكتشاف ملفات SUID التي قد تسمح بتصعيد الصلاحيات.
+إصلاح صلاحيات الملفات تلقائيًا.
+تحليل سجلات المصادقة واكتشاف الأنشطة المشبوهة.
+
+Network Forensics | التحليل الجنائي للشبكات
+
+حساب وتقسيم الشبكات باستخدام CIDR.
+تحليل ملفات PCAP والتعرّف على مخاطر بيانات الاعتماد غير المشفرة.
+اكتشاف اتصالات القيادة والتحكم (C2 Beaconing).
+فحص الشبكات واكتشاف الخدمات أو الأبواب الخلفية داخل مختبر مصرح به.
+
+Web Application Security | أمن تطبيقات الويب
+
+فهم ثغرات حقن SQL واختبار ضوابط المصادقة داخل بيئة معزولة.
+اكتشاف هجمات XSS المخزنة ومنعها.
+معالجة ثغرات IDOR والتحقق من صلاحيات الوصول.
+تطبيق آليات الحماية من هجمات CSRF.
+
+SOC & Defensive Threat Hunting | مركز العمليات الأمنية والصيد التهديدي
+
+اكتشاف حالات السفر المستحيل (Impossible Travel).
+تحليل وإزالة التمويه عن أوامر PowerShell المشبوهة.
+ربط مؤشرات الهجمات بقواعد الكشف Sigma.
+إعداد تقارير منظمة للاستجابة للحوادث الأمنية.
+🧪 2. Isolated Lab Execution | تنفيذ المختبرات المعزولة
+جلسات تدريب فعلية داخل حاويات معزولة.
+متابعة تغييرات الملفات أثناء تنفيذ المهام.
+تنظيف تلقائي للجلسات المؤقتة بعد انتهاء مدة صلاحيتها (TTL).
+طرفية تفاعلية داخل المتصفح.
+فصل بيئات التدريب عن الأنظمة غير المصرح باختبارها.
+✅ 3. Automated Server-Side Grading | التقييم الآلي من جهة الخادم
+التحقق من صلاحيات الملفات الفعلية بصيغة Octal.
+فحص التغييرات التي أُجريت على ملفات المختبر.
+احتساب النتائج وفق معايير محددة على الخادم.
+منع الاعتماد على نتائج وهمية أو تحقق محلي غير موثوق.
+🎓 4. Student Dashboard | لوحة تحكم المتدرب
+تتبع نقاط الخبرة (XP) والتقدم في الوقت الفعلي.
+نظام رتب يبدأ من Apprentice وصولًا إلى Principal Operative.
+معرض الشارات والإنجازات.
+شهادات إتمام قابلة للتحقق من صحتها، وفق آلية التوقيع المعتمدة في المشروع.
+سجل للمهام المكتملة والنتائج المكتسبة.
+👨‍🏫 5. Instructor Portal | بوابة المدربين
+إنشاء مجموعات تدريبية وتكليفات للطلاب.
+متابعة تقدم المتدربين وتحليل الأداء.
+مراجعة تقارير الحوادث الأمنية.
+تخصيص درجات التقييم ومعايير النجاح.
+🔐 6. Root Admin Center | مركز الإدارة العليا
+إدارة دورة حياة الحسابات.
+إيقاف المستخدمين وتغيير أدوارهم وفق الصلاحيات.
+إنشاء المهام وتحريرها.
+مراقبة جلسات المختبر وإيقافها عند الحاجة.
+سجلات تدقيق أمنية غير قابلة للتعديل عبر التطبيق.
+تفعيل وضع الصيانة.
+تصدير البيانات والتقارير بصيغة CSV.
+💾 7. Reliable Data & State Management | موثوقية البيانات وإدارة الحالة
+تخزين دائم للبيانات.
+منح نقاط الخبرة ضمن معاملات موثوقة.
+منع احتساب الإرسال المكرر للمهام.
+استخدام قاعدة بيانات منظمة لدعم عمليات المنصة.
+تجنب البدائل الوهمية لعمليات التخزين والتحقق الأساسية.
+🌍 8. Full Arabic & English Support | دعم العربية والإنجليزية
+واجهة عربية كاملة باتجاه RTL.
+واجهة إنجليزية باتجاه LTR.
+مبدّل لغة متاح داخل التطبيق.
+ترجمة القوائم والأزرار والرسائل والتنبيهات.
+دعم تخطيط متجاوب للشاشات المختلفة.
+مراعاة اتجاه النصوص المختلطة، خصوصًا عناوين IP والأوامر البرمجية والبريد الإلكتروني.
+حفظ تفضيل اللغة للمستخدم عند تفعيل آلية التخزين المناسبة.
+🚀 Quick Start | البدء السريع
+1. Prerequisites | المتطلبات الأساسية
+Node.js v20.x أو v22.x LTS.
+npm v10 أو إصدار أحدث.
+Git.
+Docker وDocker Compose عند استخدام النشر بالحاويات.
+2. Installation | التثبيت
+# Clone the repository | استنساخ المستودع
 git clone https://github.com/RogueByteOfficial/roguebyte-cyber-lab.git
+
+# Enter the project directory | الدخول إلى مجلد المشروع
 cd roguebyte-cyber-lab
 
-# Install dependencies
+# Install dependencies | تثبيت الاعتماديات
 npm install
 
-# Start development full-stack server
+# Start the development server | تشغيل خادم التطوير
 npm run dev
-```
 
-Open your browser at **`http://localhost:3000`**.
 
----
+افتح المتصفح على:
 
-## 🔑 Default Development Accounts
+http://localhost:3000
 
-For instant evaluation, the platform includes pre-configured development roles (accessible via the **Demo Logins** button in the header):
-
-| Role | Username | Email | Password |
-|---|---|---|---|
-| **Root Administrator** | `SidoDev-Dz` | `admin@roguebyte.local` | `AdminSidoDev2026!` |
-| **Cyber Instructor** | `Instructor_Malik` | `instructor@roguebyte.local` | `InstructorPass2026!` |
-| **Cadet Student** | `Cadet_Alex` | `student@roguebyte.local` | `StudentPass2026!` |
-
----
-
-## 🐳 Docker Production Deployment
-
-Run with Docker Compose and PostgreSQL:
-
-```bash
+3. Production Deployment | النشر الإنتاجي
 docker compose up -d --build
-```
 
-Health check verification:
-```bash
+
+التحقق من حالة الخدمة:
+
 curl http://localhost:3000/api/health
-```
 
----
 
-## 📁 Repository Structure
+تأكد من ضبط متغيرات البيئة والأسرار وقاعدة البيانات وفق دليل النشر قبل إتاحة الخدمة للمستخدمين.
 
-```
-├── docs/                   # Complete architecture, security, and setup manuals
-│   ├── architecture.md
-│   ├── installation.md
-│   ├── security.md
-│   ├── missions.md
-│   ├── operations.md
-│   ├── troubleshooting.md
-│   └── github-deployment.md
-├── prisma/
-│   └── schema.prisma       # Full normalized database schema
-├── scripts/
-│   ├── setup.sh            # Linux / WSL2 automated setup script
-│   └── setup.ps1           # Windows PowerShell setup script
-├── src/
-│   ├── client/             # React 19 Frontend components & context
-│   │   ├── components/     # Terminals, dashboards, modals, catalogue
-│   │   ├── context/        # Auth & i18n context
-│   │   └── i18n.ts         # English & Arabic bilingual dictionary
-│   ├── server/             # Express 4.x REST API & Lab execution engine
-│   │   ├── db/             # Persistence engine & initial 16 missions seed
-│   │   ├── lab/            # Isolated lab sandbox manager & state grader
-│   │   └── routes/         # Versioned API routes (auth, missions, labs, admin)
-│   └── shared/             # Shared TypeScript models and interfaces
-├── server.ts               # Full-stack server entry point (Express + Vite)
-├── docker-compose.yml      # Multi-container production deployment configuration
-├── Dockerfile              # Multi-stage production container build
-└── README.md
-```
+🔑 Development Accounts | حسابات التطوير
 
----
+بحسب إعدادات التطوير الموصوفة للمشروع، يمكن الوصول إلى حسابات العرض عبر زر Demo Logins.
 
-## ⚖️ Responsible Use & Ethical Hacking Agreement
+الدور	Role	اسم المستخدم
+مدير النظام الأعلى	Root Administrator	SidoDev-Dz
+مدرب الأمن السيبراني	Cyber Instructor	Instructor_Malik
+متدرب	Cadet Student	Cadet_Alex
 
-This software is strictly engineered for authorized educational, defensive training, and security research purposes. Never deploy against systems without explicit written consent.
+تنبيه أمني: بيانات الدخول الافتراضية مخصصة للتطوير المحلي فقط. لا تستخدم كلمات مرور تجريبية أو حسابات ثابتة في الإنتاج. استخدم أسرارًا قوية وفريدة، وغيّر بيانات الاعتماد قبل النشر، وعطّل حسابات العرض في البيئة الإنتاجية.
 
----
+📁 Repository Structure | هيكل المستودع
+docs/                  # Documentation | التوثيق
+prisma/                # Database schema | مخطط قاعدة البيانات
+scripts/               # Setup scripts | سكربتات الإعداد
+src/
+  client/
+    components/        # UI components | مكونات الواجهة
+    context/           # Authentication & i18n
+    i18n.ts             # English & Arabic translations
+  server/
+    db/                # Persistence & mission seed
+    lab/               # Isolated lab engine
+    routes/             # API endpoints
+  shared/              # Shared TypeScript types
+server.ts              # Application entry point
+docker-compose.yml     # Docker deployment
+Dockerfile             # Production container build
+README.md              # Project documentation
 
-## 👨‍💻 Creator & Community
+⚖️ Responsible Use | الاستخدام المسؤول
 
-- **Project Lead & Architect:** **SidoDev-Dz**
-- **Sponsorship & Donations:** [https://ko-fi.com/roguebyte](https://ko-fi.com/roguebyte)
-- **GitHub:** [https://github.com/RogueByteOfficial](https://github.com/RogueByteOfficial)
+English
+
+RogueByte Cyber Lab is intended for authorized cybersecurity education, defensive training, and controlled security research. Never test or access systems without explicit authorization.
+
+العربية
+
+صُممت RogueByte Cyber Lab لأغراض التعليم والتدريب الدفاعي في الأمن السيبراني والبحث الأمني ضمن بيئات خاضعة للرقابة.
+
+يُمنع اختبار الأنظمة أو الوصول إليها دون تصريح صريح. يجب إجراء جميع التجارب ضمن مختبرات معزولة أو أنظمة يملك المستخدم حق اختبارها، مع الالتزام بالقوانين والسياسات الأمنية المعمول بها.
+
+👨‍💻 Creator & Community | المطور والمجتمع
+Project Lead & Architect | قائد المشروع ومهندسه: SidoDev-Dz
+GitHub: https://github.com/RogueByteOfficial
+Ko-fi Support | دعم المشروع: https://ko-fi.com/roguebyte
+
+RogueByte Cyber Lab — Learn. Detect. Defend. | تعلّم. اكتشف. دافع.
