@@ -1,0 +1,6 @@
+{
+  "name": "RogueByte Cyber Lab - Black Gray Edition",
+  "description": "Production-ready cybersecurity training platform by SidoDev-Dz featuring isolated labs, hands-on missions, and automated grading.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

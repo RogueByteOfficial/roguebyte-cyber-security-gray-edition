@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # RogueByte Cyber Lab Web Application & API
+  roguebyte-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: roguebyte-cyber-lab
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://roguebyte_user:SecureRogueByte2026!@postgres:5432/roguebyte_db?schema=public
+      - JWT_SECRET=roguebyte_master_signing_key_sidodev_2026_isolated_sec
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - roguebyte_data:/app/data
+    networks:
+      - roguebyte-net
+
+  # PostgreSQL Relational Database Service
+  postgres:
+    image: postgres:16-alpine
+    container_name: roguebyte-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: roguebyte_db
+      POSTGRES_USER: roguebyte_user
+      POSTGRES_PASSWORD: SecureRogueByte2026!
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roguebyte_user -d roguebyte_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - roguebyte-net
+
+networks:
+  roguebyte-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  roguebyte_data:

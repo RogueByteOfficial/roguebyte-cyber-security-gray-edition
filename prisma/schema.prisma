@@ -1,0 +1,420 @@
+// RogueByte Cyber Lab - Production Database Schema
+// Creator & Lead Architect: SidoDev-Dz
+// Black Gray Edition v1
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum MissionCategory {
+  LINUX
+  NETWORKING
+  WEB_SECURITY
+  DEFENSIVE
+}
+
+enum MissionDifficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum SubmissionType {
+  ANSWER
+  FLAG
+  STRUCTURED_JSON
+  REPORT
+  LAB_STATE
+  INSTRUCTOR_REVIEW
+}
+
+enum LabSessionStatus {
+  STARTING
+  RUNNING
+  TERMINATING
+  STOPPED
+  EXPIRED
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum AuditCategory {
+  AUTH
+  LAB
+  MISSION
+  ADMIN
+  SECURITY
+}
+
+enum AuditStatus {
+  SUCCESS
+  WARNING
+  FAILURE
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  username     String    @unique
+  passwordHash String
+  role         UserRole  @default(STUDENT)
+  isSuspended  Boolean   @default(false)
+  avatarUrl    String?
+  currentRank  String    @default("Cyber Apprentice")
+  xp           Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
+
+  sessions          UserSession[]
+  attempts          MissionAttempt[]
+  submissions       Submission[]
+  labSessions       LabSession[]
+  userBadges        UserBadge[]
+  certificates      Certificate[]
+  auditEvents       AuditEvent[]
+  authoredMissions  Mission[]            @relation("MissionAuthor")
+  createdAssignments MissionAssignment[] @relation("AssignmentCreator")
+  feedbacksGiven    InstructorFeedback[] @relation("FeedbackInstructor")
+  feedbacksReceived InstructorFeedback[] @relation("FeedbackStudent")
+  xpTransactions    XPTransaction[]
+  hintUsages        HintUsage[]
+
+  @@index([email])
+  @@index([username])
+  @@index([xp])
+}
+
+model UserSession {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  ipAddress String
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+}
+
+model TrainingPath {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  titleAr     String?
+  description String
+  category    MissionCategory
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  missions Mission[]
+}
+
+model Mission {
+  id                  String            @id @default(uuid())
+  slug                String            @unique
+  title               String
+  titleAr             String?
+  description         String
+  descriptionAr       String?
+  category            MissionCategory
+  difficulty          MissionDifficulty
+  xpReward            Int               @default(100)
+  estimatedMinutes    Int               @default(20)
+  submissionType      SubmissionType    @default(FLAG)
+  learningObjectives  String[]
+  threatModel         String?
+  taskInstructions    String
+  taskInstructionsAr  String?
+  remediationGuidance String
+  isPublished         Boolean           @default(true)
+  authorId            String
+  trainingPathId      String?
+  labProfileId        String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  author       User          @relation("MissionAuthor", fields: [authorId], references: [id])
+  trainingPath TrainingPath? @relation(fields: [trainingPathId], references: [id])
+  labProfile   LabProfile?   @relation(fields: [labProfileId], references: [id])
+
+  prerequisites   MissionPrerequisite[] @relation("MissionTarget")
+  dependentOn     MissionPrerequisite[] @relation("MissionPrereq")
+  attempts        MissionAttempt[]
+  submissions     Submission[]
+  labSessions     LabSession[]
+  assignments     AssignmentMission[]
+  hints           MissionHintDefinition[]
+
+  @@index([category])
+  @@index([difficulty])
+  @@index([isPublished])
+}
+
+model MissionHintDefinition {
+  id        String   @id @default(uuid())
+  missionId String
+  index     Int
+  title     String
+  content   String
+  xpPenalty Int      @default(15)
+
+  mission Mission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@unique([missionId, index])
+}
+
+model MissionPrerequisite {
+  id             String @id @default(uuid())
+  missionId      String
+  prerequisiteId String
+
+  mission      Mission @relation("MissionTarget", fields: [missionId], references: [id], onDelete: Cascade)
+  prerequisite Mission @relation("MissionPrereq", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+
+  @@unique([missionId, prerequisiteId])
+}
+
+model LabProfile {
+  id              String          @id @default(uuid())
+  name            String
+  category        MissionCategory
+  dockerImage     String
+  cpuLimit        String          @default("0.5")
+  memoryMbLimit   Int             @default(256)
+  maxProcesses    Int             @default(32)
+  timeoutMinutes  Int             @default(30)
+  initialFiles    Json            // Virtual initial files and permissions map
+  environmentVars Json?
+  createdAt       DateTime        @default(now())
+
+  missions    Mission[]
+  labSessions LabSession[]
+}
+
+model LabSession {
+  id                    String           @id @default(uuid())
+  missionId             String
+  userId                String
+  profileId             String
+  status                LabSessionStatus @default(RUNNING)
+  ipAddress             String
+  terminalHistory       String[]
+  currentFilesSnapshot  Json
+  executedCommandsCount Int              @default(0)
+  createdAt             DateTime         @default(now())
+  expiresAt             DateTime
+  lastActiveAt          DateTime         @default(now())
+
+  mission Mission    @relation(fields: [missionId], references: [id])
+  user    User       @relation(fields: [userId], references: [id])
+  profile LabProfile @relation(fields: [profileId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+}
+
+model MissionAttempt {
+  id               String        @id @default(uuid())
+  missionId        String
+  userId           String
+  startedAt        DateTime      @default(now())
+  completedAt      DateTime?
+  status           AttemptStatus @default(IN_PROGRESS)
+  earnedXp         Int           @default(0)
+  submissionsCount Int           @default(0)
+
+  mission     Mission       @relation(fields: [missionId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
+  submissions Submission[]
+  hintUsages  HintUsage[]
+
+  @@index([userId, missionId])
+  @@index([status])
+}
+
+model HintUsage {
+  id        String   @id @default(uuid())
+  attemptId String
+  userId    String
+  hintIndex Int
+  xpPenalty Int
+  usedAt    DateTime @default(now())
+
+  attempt MissionAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  user    User           @relation(fields: [userId], references: [id])
+
+  @@unique([attemptId, hintIndex])
+}
+
+model Submission {
+  id             String         @id @default(uuid())
+  attemptId      String
+  missionId      String
+  userId         String
+  submissionType SubmissionType
+  content        String
+  isCorrect      Boolean
+  score          Int            @default(0)
+  feedback       String
+  reviewedBy     String?
+  submittedAt    DateTime       @default(now())
+
+  attempt        MissionAttempt     @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  mission        Mission            @relation(fields: [missionId], references: [id])
+  user           User               @relation(fields: [userId], references: [id])
+  resultDetails  SubmissionResult?
+
+  @@index([userId])
+  @@index([missionId])
+}
+
+model SubmissionResult {
+  id           String   @id @default(uuid())
+  submissionId String   @unique
+  verifiedAt   DateTime @default(now())
+  metrics      Json?
+  automatedLog String?
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+}
+
+model XPTransaction {
+  id        String   @id @default(uuid())
+  userId    String
+  amount    Int
+  reason    String
+  sourceRef String?  // mission id or assignment id
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Badge {
+  id               String                 @id @default(uuid())
+  code             String                 @unique
+  title            String
+  titleAr          String
+  description      String
+  descriptionAr    String
+  icon             String
+  category         MissionCategory?
+  xpRequired       Int?
+  missionsRequired Int?
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+}
+
+model Certificate {
+  id                String   @id @default(uuid())
+  certificateNumber String   @unique
+  userId            String
+  username          String
+  title             String
+  category          MissionCategory?
+  verificationHash  String   @unique
+  signature         String
+  issuedAt          DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([certificateNumber])
+  @@index([verificationHash])
+}
+
+model MissionAssignment {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  targetGroup String
+  dueDate     DateTime
+  createdById String
+  createdAt   DateTime @default(now())
+
+  creator  User                @relation("AssignmentCreator", fields: [createdById], references: [id])
+  missions AssignmentMission[]
+}
+
+model AssignmentMission {
+  id           String @id @default(uuid())
+  assignmentId String
+  missionId    String
+
+  assignment MissionAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  mission    Mission           @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, missionId])
+}
+
+model InstructorFeedback {
+  id           String   @id @default(uuid())
+  instructorId String
+  studentId    String
+  missionId    String
+  comments     String
+  grade        Int
+  createdAt    DateTime @default(now())
+
+  instructor User @relation("FeedbackInstructor", fields: [instructorId], references: [id])
+  student    User @relation("FeedbackStudent", fields: [studentId], references: [id])
+}
+
+model AuditEvent {
+  id        String        @id @default(uuid())
+  timestamp DateTime      @default(now())
+  userId    String?
+  username  String?
+  action    String
+  category  AuditCategory
+  details   String
+  ipAddress String
+  status    AuditStatus   @default(SUCCESS)
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([category])
+  @@index([action])
+  @@index([timestamp])
+}
+
+model SystemSetting {
+  id                       String   @id @default("singleton")
+  maintenanceMode          Boolean  @default(false)
+  maxConcurrentLabsPerUser Int      @default(1)
+  defaultLabTimeoutMinutes Int      @default(30)
+  registrationOpen         Boolean  @default(true)
+  strictRateLimiting       Boolean  @default(false)
+  updatedAt                DateTime @updatedAt
+}
