@@ -1,6 +1,6 @@
 🛡️ RogueByte Cyber Lab — Black Gray Edition v1
 
-منصة احترافية للتدريب على الأمن السيبراني واختبار المهارات داخل بيئة معزولة
+منصة احترافية للتدريب على الأمن السيبراني واختبار  المهارات اختراق داخل بيئة معزولة
 
 Production-Ready Cybersecurity Training Platform & Isolated Lab Environment
 
